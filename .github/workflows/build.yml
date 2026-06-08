@@ -8,9 +8,21 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: List files to find Gradle
-        run: |
-          echo "Looking for gradlew..."
-          find . -name "gradlew"
-          echo "--- List of files in the project ---"
-          ls -R
+      - name: Set up Java JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      # This creates the missing files automatically for you
+      - name: Create Gradle Wrapper
+        run: gradle wrapper
+
+      - name: Build with Gradle
+        run: chmod +x gradlew && ./gradlew assembleDebug
+
+      - name: Upload Finished APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: FreeFire_Sensi_Booster
+          path: app/build/outputs/apk/debug/app-debug.apk
