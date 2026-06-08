@@ -15,11 +15,10 @@ jobs:
           distribution: 'temurin'
 
       - name: Build with Gradle
-        run: |
-          if [ -f "gradlew" ]; then
-            chmod +x gradlew
-            ./gradlew assembleDebug
-          else
-            echo "gradlew not found at root! Searching for it..."
-            find . -name "gradlew"
-          fi
+        run: ./gradlew assembleDebug
+
+      - name: Upload Finished APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: FreeFire_Sensi_Booster
+          path: app/build/outputs/apk/debug/app-debug.apk
